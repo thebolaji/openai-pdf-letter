@@ -1,10 +1,11 @@
 const OpenAI = require("openai");
 const PDFDocument = require("pdfkit");
 const fs = require("fs");
+require("dotenv").config();
 
 // Set up OpenAI API
 const openai = new OpenAI({
-  apiKey: "sk-proj-AKJsLlDzXsQVCvjiVOV1T3BlbkFJuXm4TA40Ioa1MbLhGgR9", // Replace with your OpenAI API key
+  apiKey: process.env.OPENAI_API_KEY, // Replace with your OpenAI API key
 });
 
 // Function to generate text using OpenAI
