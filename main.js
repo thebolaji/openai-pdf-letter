@@ -1,6 +1,3 @@
-// main.js
-
-// Required packages
 const fs = require("fs");
 const path = require("path");
 const OpenAI = require("openai");
@@ -34,8 +31,8 @@ function createPDF(text, fileName, senderAddress, recipientAddress, date) {
 
   // Set up font, size, and color for human handwriting effect
   doc
-    .font("fonts/Caveat.ttf") // You need to have a handwriting font in the "fonts" directory
-    .fontSize(16)
+    .font("fonts/SwankyandMooMoo-Regular.ttf") // You need to have a handwriting font in the "fonts" directory
+    .fontSize(15)
     .fillColor("#000000"); // You can change color here if you like
 
   // Add sender's address
@@ -65,10 +62,21 @@ function readPromptFromFile(filePath) {
 // Main function
 (async function main() {
   // Define personal details
-  const senderAddress =
-    "Your Name\nYour Address Line 1\nYour Address Line 2\nCity, State, Zip Code";
-  const recipientAddress =
-    "Recipient Name\nRecipient Address Line 1\nRecipient Address Line 2\nCity, State, Zip Code";
+  const htmlContent = `
+<div style="display: flex; justify-content: space-between;">
+  <div>
+    <p>[Full Name]</p>
+    <p>[City, State, ZIP]</p>
+    <p>[SSN]</p>
+    <p>[Date of Birth]</p>
+  </div>
+  <div style="text-align: right;">
+    <p>[The bureau's address]</p>
+    <p>[P.O. Box]</p>
+    <p>[City, State, ZIP]</p>
+  </div>
+</div>
+`;
   const date = new Date().toLocaleDateString();
 
   // Read the prompt from a file
@@ -78,13 +86,7 @@ function readPromptFromFile(filePath) {
   const letterText = await generateLetter(prompt);
 
   // Create a PDF with the generated text
-  createPDF(
-    letterText,
-    "output_letter.pdf",
-    senderAddress,
-    recipientAddress,
-    date
-  );
+  createPDF(letterText, "output_letter.pdf", htmlContent, date);
 
   console.log("PDF created successfully.");
 })();
